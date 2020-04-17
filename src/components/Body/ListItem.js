@@ -78,7 +78,7 @@ export default class ListItem extends Component {
 		return (
 			<Fragment>
 				{numItems === 0 ? (
-					<div>No item in your cart</div>
+					<div className="pl-3">No item in your cart</div>
 				) : (
 					items.map((_item, _index) => {
 						return (
