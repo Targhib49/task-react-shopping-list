@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import moment from 'moment';
+import ModalEditItem from './ModalEditItem';
 import {
 	MDBRow,
 	MDBCol,
@@ -15,9 +15,11 @@ import {
 
 export default class ListItem extends Component {
 	state = {
+		modal14: false,
 		itemName: '',
 		itemDesc: '',
-		itemLink: ''
+		itemLink: '',
+		index: 0
 	};
 
 	updateInput = (event) => {
@@ -28,35 +30,12 @@ export default class ListItem extends Component {
 		}));
 	};
 
-	editItem = (index) => {
-		const items = JSON.parse(localStorage.getItem('shoppingItems'));
-		console.log(items);
-		let newItemName = prompt('Enter your new item name');
-		let newItemDesc = prompt('Enter your new item desc');
-		let newItemLink = prompt('Enter your new item link');
-
-		if (!newItemName) {
-			newItemName = items[index].itemName;
-		}
-
-		if (!newItemDesc) {
-			newItemDesc = items[index].itemDesc;
-		}
-
-		if (!newItemLink) {
-			newItemLink = items[index].itemLink;
-		}
-
-		const newItem = {
-			itemName: newItemName,
-			itemDesc: newItemDesc,
-			itemLink: newItemLink,
-			createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
-		};
-
-		items.splice(index, 1, newItem);
-		localStorage.setItem('shoppingItems', JSON.stringify(items));
-		window.location.reload();
+	toggle = (nr, index) => () => {
+		let modalNumber = 'modal' + nr;
+		this.setState({
+			[modalNumber]: !this.state[modalNumber],
+			index: index
+		});
 	};
 
 	deleteItem = (index) => {
@@ -91,12 +70,7 @@ export default class ListItem extends Component {
 											<MDBCardText>{_item.itemDesc}</MDBCardText>
 											<MDBCardText>{_item.createdAt}</MDBCardText>
 											<MDBRow className="justify-content-end">
-												<MDBBtn
-													className="edit-button"
-													onClick={() => {
-														this.editItem(_index);
-													}}
-												>
+												<MDBBtn className="edit-button" onClick={this.toggle(14, _index)}>
 													<MDBIcon icon="pen" />
 												</MDBBtn>
 												<MDBBtn
@@ -108,6 +82,12 @@ export default class ListItem extends Component {
 												>
 													<MDBIcon far icon="trash-alt" />
 												</MDBBtn>
+												<ModalEditItem
+													state={this.state}
+													toggle={this.toggle}
+													editIndex={this.state.index}
+													list={this.props}
+												/>
 											</MDBRow>
 										</MDBCardBody>
 									</MDBCard>
