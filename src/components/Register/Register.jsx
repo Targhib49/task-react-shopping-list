@@ -19,7 +19,7 @@ class Register extends Component {
 							return errors;
 						}}
 						onSubmit={(values, { setSubmitting }) => {
-							const url = 'https://5e8ee187fe7f2a00165eead7.mockapi.io/users';
+							const url = 'https://5e945b44f591cb0016d80f27.mockapi.io/Users';
 							values.avatar =
 								'https://www.searchpng.com/wp-content/uploads/2019/02/Deafult-Profile-Pitcher.png';
 							const options = {

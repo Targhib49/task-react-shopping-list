@@ -11,20 +11,40 @@ export default class ModalAddItem extends Component {
 		}));
 	};
 
-	sumbitData = (event) => {
+	sumbitData = async (event) => {
 		event.preventDefault();
+		console.log(this.props, 'props');
+
+		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.props.users.id}/ShoppingList`;
+
 		const items = localStorage.getItem('shoppingItems');
 
 		const shoppingItems = {
-			itemName: this.state.itemName,
-			itemDesc: this.state.itemDesc,
-			itemLink: this.state.itemLink,
+			name: this.state.itemName,
+			description: this.state.itemDesc,
+			image: this.state.itemLink,
 			createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
 		};
-		const getLocalStorage = items === null ? [] : JSON.parse(items);
-		getLocalStorage.push(shoppingItems);
-		localStorage.setItem('shoppingItems', JSON.stringify(getLocalStorage));
-		window.location.reload();
+
+		const options = {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(shoppingItems),
+			method: 'POST'
+		};
+
+		fetch(url, options)
+			.then((response) => {
+				return response.json();
+			})
+			.then((result) => {
+				const getLocalStorage = items === null ? [] : JSON.parse(items);
+				getLocalStorage.push(shoppingItems);
+				localStorage.setItem('shoppingItems', JSON.stringify(getLocalStorage));
+				alert('item added');
+				window.location.reload();
+			});
 	};
 
 	render() {

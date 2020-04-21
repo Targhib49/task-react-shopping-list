@@ -23,7 +23,7 @@ export default class ContentList extends Component {
 		return (
 			<MDBContainer className="pt-4">
 				<MDBRow>
-					<ListItem items={this.state.shoppingList} />
+					<ListItem items={this.state.shoppingList} users={this.props.users} />
 				</MDBRow>
 			</MDBContainer>
 		);

@@ -37,6 +37,14 @@ class ModalEditItem extends Component {
 		window.location.reload();
 	};
 
+	componentDidMount = async () => {
+		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.props.users.id}/ShoppingList`;
+		const response = await fetch(url);
+		const result = await response.json();
+
+		// const existingUser = result.find((element) => element.email === values.email);
+	};
+
 	render() {
 		return (
 			<MDBContainer>

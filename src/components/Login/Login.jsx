@@ -19,7 +19,7 @@ class Login extends Component {
 							return errors;
 						}}
 						onSubmit={async (values) => {
-							const url = 'https://5e8ee187fe7f2a00165eead7.mockapi.io/users';
+							const url = 'https://5e945b44f591cb0016d80f27.mockapi.io/Users';
 							const response = await fetch(url);
 							const result = await response.json();
 
@@ -34,6 +34,8 @@ class Login extends Component {
 							) {
 								alert('email/password salah');
 							} else {
+								localStorage.setItem('isLogin', true);
+								localStorage.setItem('userData', JSON.stringify(existingUser));
 								alert(`selamat datang kembali ${existingUser.name}`);
 								// history.push('/github');
 							}

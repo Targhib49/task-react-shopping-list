@@ -25,7 +25,7 @@ export default class AddItem extends Component {
 						<MDBBtn color="blue-grey" className="add-item" onClick={this.toggle(8)}>
 							<MDBIcon icon="plus" className="mr-1" />Add new item
 						</MDBBtn>
-						<ModalAddItem state={this.state} toggle={this.toggle} />
+						<ModalAddItem state={this.state} toggle={this.toggle} users={this.props.users} />
 					</MDBCol>
 				</MDBRow>
 			</MDBContainer>

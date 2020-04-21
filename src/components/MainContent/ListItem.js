@@ -64,10 +64,10 @@ export default class ListItem extends Component {
 							<MDBCol sm="5" md="5" lg="3" xl="3" key={_index}>
 								<MDBAnimation type="fadeIn" duration="3s" delay={_index / 2 + 's'}>
 									<MDBCard className="item-card">
-										<MDBCardImage className="img-fluid pt-2" src={_item.itemLink} waves />
+										<MDBCardImage className="img-fluid pt-2" src={_item.image} waves />
 										<MDBCardBody>
-											<MDBCardTitle className="pt-2">{_item.itemName}</MDBCardTitle>
-											<MDBCardText>{_item.itemDesc}</MDBCardText>
+											<MDBCardTitle className="pt-2">{_item.name}</MDBCardTitle>
+											<MDBCardText>{_item.description}</MDBCardText>
 											<MDBCardText>{_item.createdAt}</MDBCardText>
 											<MDBRow className="justify-content-end">
 												<MDBBtn className="edit-button" onClick={this.toggle(14, _index)}>
@@ -86,7 +86,8 @@ export default class ListItem extends Component {
 													state={this.state}
 													toggle={this.toggle}
 													editIndex={this.state.index}
-													list={this.props}
+													list={this.props.items}
+													users={this.props.users}
 												/>
 											</MDBRow>
 										</MDBCardBody>
