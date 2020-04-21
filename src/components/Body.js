@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { MDBContainer } from 'mdbreact';
-import ContentTitle from './Body/ContentTitle.js';
-import AddItem from './Body/AddItem';
-import ContentList from './Body/ContentList';
+import ContentTitle from './MainContent/ContentTitle.js';
+import AddItem from './MainContent/AddItem';
+import ContentList from './MainContent/ContentList';
 
 export default class Body extends Component {
 	render() {
