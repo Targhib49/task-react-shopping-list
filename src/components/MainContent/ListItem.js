@@ -51,8 +51,10 @@ export default class ListItem extends Component {
 	};
 
 	render() {
-		const { items } = this.props;
+		const items = this.props.items;
 		const numItems = items.length;
+		console.log(items);
+		// console.log(this.props.users);
 
 		return (
 			<Fragment>

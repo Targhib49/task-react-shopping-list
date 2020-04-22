@@ -4,9 +4,10 @@ import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalF
 
 class ModalEditItem extends Component {
 	state = {
-		itemName: '',
-		itemDesc: '',
-		itemLink: ''
+		itemList: [],
+		name: '',
+		description: '',
+		image: ''
 	};
 
 	updateInput = (event) => {
@@ -18,31 +19,44 @@ class ModalEditItem extends Component {
 		}));
 	};
 
-	sumbitData = (event) => {
+	sumbitData = async (event) => {
 		event.preventDefault();
+		const currentItem = this.state.itemList.find((element) => Number(element.id) === this.props.editIndex);
+		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.props.users
+			.id}/ShoppingList/${currentItem.id}`;
 
 		const newItem = {
-			itemName: this.state.itemName,
-			itemDesc: this.state.itemDesc,
-			itemLink: this.state.itemLink,
+			name: this.state.name === '' ? currentItem.name : this.state.name,
+			description: this.state.description === '' ? currentItem.description : this.state.description,
+			image: this.state.image === '' ? currentItem.image : this.state.image,
 			createdAt: moment().format('MMMM Do YYYY, h:mm:ss a')
 		};
-		console.log(this.state.itemName, 'itemName');
-		console.log(this.state.itemDesc, 'itemDesc');
-		console.log(this.state.itemLink, 'itemLink');
 
-		let listItems = this.props.list.items;
+		let listItems = this.props.list;
 		listItems.splice(this.props.editIndex, 1, newItem);
+
+		const response = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ newItem })
+		});
+
+		await response.json();
+
 		localStorage.setItem('shoppingItems', JSON.stringify(listItems));
 		window.location.reload();
 	};
 
 	componentDidMount = async () => {
 		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.props.users.id}/ShoppingList`;
+
 		const response = await fetch(url);
 		const result = await response.json();
 
-		// const existingUser = result.find((element) => element.email === values.email);
+		const userItemsList = result.filter((element) => element.UserId === this.props.users.id);
+		this.setState({ itemList: userItemsList });
 	};
 
 	render() {
@@ -56,38 +70,34 @@ class ModalEditItem extends Component {
 					<form onSubmit={(event) => this.sumbitData(event)}>
 						<MDBModalHeader toggle={this.props.toggle(14, this.props.editIndex)}>
 							Edit your item<br />
-							<h6>
-								(If you don't want to change the input value, please type "a" and erase it again before
-								sav changes)
-							</h6>
 						</MDBModalHeader>
 						<MDBModalBody>
 							<MDBInput
-								name="itemName"
+								name="name"
 								label="Enter your item"
 								icon="apple-alt"
 								group
 								type="text"
-								valueDefault={this.props.list.items[this.props.editIndex].itemName}
+								valueDefault={this.props.list[this.props.editIndex].name}
 								onChange={(event) => this.updateInput(event)}
 							/>
 							<MDBInput
-								name="itemDesc"
+								name="description"
 								type="textarea"
 								rows="2"
 								label="Enter item description"
 								icon="pencil-alt"
 								style={{ resize: 'none' }}
-								valueDefault={this.props.list.items[this.props.editIndex].itemDesc}
+								valueDefault={this.props.list[this.props.editIndex].description}
 								onChange={(event) => this.updateInput(event)}
 							/>
 							<MDBInput
-								name="itemLink"
+								name="image"
 								label="Enter your item's image link"
 								icon="image"
 								group
 								type="text"
-								valueDefault={this.props.list.items[this.props.editIndex].itemLink}
+								valueDefault={this.props.list[this.props.editIndex].image}
 								onChange={(event) => this.updateInput(event)}
 							/>
 						</MDBModalBody>
