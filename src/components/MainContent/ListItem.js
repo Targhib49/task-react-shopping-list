@@ -38,12 +38,20 @@ export default class ListItem extends Component {
 		});
 	};
 
-	deleteItem = (index) => {
+	deleteItem = async (index) => {
 		const items = JSON.parse(localStorage.getItem('shoppingItems'));
+		const currentItem = items.find((element) => element.id === index);
+		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${currentItem.UserId}/ShoppingList/${currentItem.id}`;
+
 		let isConfirm = window.confirm(
 			"Do you really want to delete your item and all of it's data?\nThis action is irreversible"
 		);
 		if (isConfirm) {
+			const response = await fetch(url, {
+				method: 'DELETE'
+			});
+			await response.json();
+
 			items.splice(index, 1);
 			localStorage.setItem('shoppingItems', JSON.stringify(items));
 			window.location.reload();
@@ -63,7 +71,7 @@ export default class ListItem extends Component {
 				) : (
 					items.map((_item, _index) => {
 						return (
-							<MDBCol sm="5" md="5" lg="3" xl="3" key={_index}>
+							<MDBCol sm="5" md="5" lg="3" xl="3" key={_item.id}>
 								<MDBAnimation type="fadeIn" duration="3s" delay={_index / 2 + 's'}>
 									<MDBCard className="item-card">
 										<MDBCardImage className="img-fluid pt-2" src={_item.image} waves />
@@ -72,14 +80,14 @@ export default class ListItem extends Component {
 											<MDBCardText>{_item.description}</MDBCardText>
 											<MDBCardText>{_item.createdAt}</MDBCardText>
 											<MDBRow className="justify-content-end">
-												<MDBBtn className="edit-button" onClick={this.toggle(14, _index)}>
+												<MDBBtn className="edit-button" onClick={this.toggle(14, _item.id)}>
 													<MDBIcon icon="pen" />
 												</MDBBtn>
 												<MDBBtn
 													className="delete-button"
 													href="#"
 													onClick={() => {
-														this.deleteItem(_index);
+														this.deleteItem(_item.id);
 													}}
 												>
 													<MDBIcon far icon="trash-alt" />

@@ -12,24 +12,32 @@ export default class ContentList extends Component {
 	}
 
 	componentDidMount = async () => {
-		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.props.users.id}/ShoppingList`;
-		console.log(url);
+		await console.log(this.props.users.id);
 
-		// const response = await fetch(url);
-		// const result = await response.json();
-		// if (result) {
-		// 	this.setState({ shoppingList: result });
-		// } else {
-		// 	console.log('No shopping list');
-		// }
+		await this.setState({
+			userId: this.props.users.id
+		});
+		console.log(this.state.userId);
+
+		const url = `https://5e945b44f591cb0016d80f27.mockapi.io/Users/${this.state.userId}/ShoppingList`;
+
+		const response = await fetch(url);
+		const result = await response.json();
+
+		if (result) {
+			localStorage.setItem('shoppingItems', JSON.stringify(result));
+			this.setState({ shoppingList: result });
+		} else {
+			console.log('No shopping list');
+		}
 	};
 
 	render() {
-		console.log(this.props.users.id);
-
 		return (
 			<MDBContainer className="pt-4">
-				<MDBRow>{/* <ListItem items={this.state.shoppingList} users={this.props.users} /> */}</MDBRow>
+				<MDBRow>
+					<ListItem items={this.state.shoppingList} users={this.props.users} />
+				</MDBRow>
 			</MDBContainer>
 		);
 	}

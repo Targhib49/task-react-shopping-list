@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
 
+.App {
+	height: 100%;
+}
+
 .content-body {
 	padding: 10px 0 !important;
 
@@ -22,5 +26,16 @@
 		.delete-button {
 			padding: .5rem .5rem;
 		}
+	}
+}
+
+.container-login {
+	height: 100%;
+	.myRow {
+		height: 100%;
+	}
+
+	.myCol {
+		height: 60%;
 	}
 }
